@@ -48,8 +48,8 @@ if (SERVER) then
 							timer.Simple(math.Rand(1, 3), function()
 								if ( IsValid(self) ) then
 									gTerminal:Broadcast(self, "");
-									gTerminal:Broadcast(self, "Welcome to gTerminal!");
-									gTerminal:Broadcast(self, "To list all commands, type :help");
+									gTerminal:Broadcast(self, "Bienvenue sur gTerminal HM!");
+									gTerminal:Broadcast(self, "Pour lister les commandes, tapez :help");
 
 									gTerminal.os:Call(self, "Initialized");
 
@@ -62,8 +62,8 @@ if (SERVER) then
 				end);
 			end;
 		else
-			gTerminal:Broadcast(self, "Welcome to gTerminal!");
-			gTerminal:Broadcast(self, "To list all commands, type :help");
+			gTerminal:Broadcast(self, "Bienvenue sur gTerminal HM!");
+			gTerminal:Broadcast(self, "Pour lister les commandes, tapez :help");
 
 			gTerminal.os:Call(self, "Initialized");
 
