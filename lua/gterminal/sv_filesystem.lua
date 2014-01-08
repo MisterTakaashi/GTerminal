@@ -21,7 +21,7 @@ function gTerminal.file:ChangeDir(entity, key)
 		return true;
 	end;
 
-	gTerminal:Broadcast(entity, "Unable to find directory!");
+	gTerminal:Broadcast(entity, "Impossible de trouver le repertoire!");
 
 	return false;
 end;
@@ -32,19 +32,19 @@ function gTerminal.file:Write(entity, key, value)
 	end;
 	
 	if (!key or key == "_parent") then
-		gTerminal:Broadcast(entity, "Invalid name!");
+		gTerminal:Broadcast(entity, "Nom invalide!");
 
 		return false;
 	end;
 
 	if ( entity.fileCurrentDir[key] ) then
-		gTerminal:Broadcast(entity, "Item already exists!");
+		gTerminal:Broadcast(entity, "L'item existe deja!");
 
 		return false;
 	end;		
 
 	if (!value) then
-		gTerminal:Broadcast(entity, "Invalid content!");
+		gTerminal:Broadcast(entity, "Contenu invalide!");
 
 		return false;
 	end;
@@ -70,13 +70,13 @@ end;
 
 function gTerminal.file:Rename(entity, previous, new)
 	if ( !previous or !entity.fileCurrentDir[previous] ) then
-		gTerminal:Broadcast(entity, "Unable to find file/directory!");
+		gTerminal:Broadcast(entity, "Impossible de trouver le fichier/dossier!");
 
 		return false;
 	end;
 
 	if (!new or new  == "_parent") then
-		gTerminal:Broadcast(entity, "Invalid file/directory name!");
+		gTerminal:Broadcast(entity, "Nom de fichier/dossier non valide!");
 
 		return false;
 	end;
@@ -89,7 +89,7 @@ end;
 
 function gTerminal.file:Delete(entity, key)
 	if ( !key or key == "_parent" or !entity.fileCurrentDir[key] ) then
-		gTerminal:Broadcast(entity, "Invalid file/directory!");
+		gTerminal:Broadcast(entity, "Fichier/dossier invalide!");
 
 		return false;
 	end;
@@ -101,19 +101,19 @@ end;
 
 function gTerminal.file:Read(entity, key)
 	if (!key or key == "_parent") then
-		gTerminal:Broadcast(entity, "Invalid name!");
+		gTerminal:Broadcast(entity, "Nom invalide!");
 
 		return false;
 	end;
 
 	if ( !entity.fileCurrentDir[key] ) then
-		gTerminal:Broadcast(entity, "Couldn't find file!");
+		gTerminal:Broadcast(entity, "Fichier introuvable!");
 
 		return false;
 	end;
 
 	if (!entity.fileCurrentDir[key].isFile or !entity.fileCurrentDir[key].value) then
-		gTerminal:Broadcast(entity, "Invalid read type!");
+		gTerminal:Broadcast(entity, "Type de lecture invalide!");
 
 		return false;
 	end;

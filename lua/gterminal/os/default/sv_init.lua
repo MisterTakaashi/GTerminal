@@ -12,7 +12,8 @@ end;
 
 function OS:GetWarmUpText()
 	return {
-		"Initializing boot sequence.",
-		"Finalizing Primary Boot Computing System."
+		"Initialisation de la sequence de boot.",
+		"Finalisation de la premiere sequence de boot.",
+        "Chargement de l'OS en RAM."
 	};
 end;

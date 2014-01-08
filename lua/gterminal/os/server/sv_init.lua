@@ -22,7 +22,7 @@ function OS:ShutDown(entity)
 	if (entity.networkID and entity.isHost) then
 		for k, v in pairs( ents.FindByClass(entity.ClassName) ) do
 			if (v.networkID == entity.networkID) then
-				gTerminal:Broadcast(v, "Lost connection to active network!", GT_COL_WRN);
+				gTerminal:Broadcast(v, "Connexion au reseau actif perdue!", GT_COL_WRN);
 
 				v.networkID = nil;
 			end;

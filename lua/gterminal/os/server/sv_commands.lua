@@ -4,16 +4,16 @@ local OS = OS;
 
 OS:NewCommand(":help", function(client, entity, arguments)
 	gTerminal:Broadcast(entity, "=============================");
-	gTerminal:Broadcast(entity, "  SERVER OS HELP");
+	gTerminal:Broadcast(entity, "  AIDE SERVER OS");
 	gTerminal:Broadcast(entity, "");
-	gTerminal:Broadcast(entity, "    COMMANDS:");
+	gTerminal:Broadcast(entity, "    COMMANDES:");
 
 	for k, v in SortedPairs( OS:GetCommands() ) do
 		gTerminal:Broadcast(entity, "     "..k.." - "..v.help);
 	end;
 
 	gTerminal:Broadcast(entity, "=============================");
-end, "Provides a list of help.");
+end, "Affiche une liste des commandes.");
 
 OS:NewCommand(":cls", function(client, entity)
 	for i = 0, 25 do
@@ -23,26 +23,26 @@ OS:NewCommand(":cls", function(client, entity)
 			end;
 		end);
 	end;
-end, "Clears the screen.");
+end, "Nettoyer l'ecran.");
 
 OS:NewCommand(":gid", function(client, entity)
 	gTerminal:Broadcast( entity, "TERMINAL ID => "..entity:EntIndex() );
-end, "Gets the terminal ID.");
+end, "Obtenir l'ID du terminal.");
 
 OS:NewCommand(":setpass", function(client, entity, arguments)
 	local password = table.concat(arguments, " ");
 
 	if (password and password != "") then
 		entity.password = password;
-		gTerminal:Broadcast(entity, "Password set to '"..entity.password.."'.");
+		gTerminal:Broadcast(entity, "Mot de passe modifie en: '"..entity.password.."'.");
 	else
 		entity.password = nil;
-		gTerminal:Broadcast(entity, "Removed password.");
+		gTerminal:Broadcast(entity, "Mot de passe supprime.");
 	end;
-end, "Sets the password for the terminal.");
+end, "Mettre un mot de passe au terminal.");
 
 OS:NewCommand(":x", function(client, entity)
-	gTerminal:Broadcast( entity, "SHUTTING DOWN..." );
+	gTerminal:Broadcast( entity, "ARRET EN COURS..." );
 
 	for k, v in pairs( player.GetAll() ) do
 		v[ "pass_authed_"..entity:EntIndex() ] = nil;
@@ -61,35 +61,35 @@ OS:NewCommand(":x", function(client, entity)
 			entity:SetActive(false);
 		end;
 	end);
-end, "Turns off the terminal.");
+end, "Arrêter le terminal.");
 
 OS:NewCommand(":gnet", function(client, entity, arguments)
 	if ( !arguments[1] ) then
-		gTerminal:Broadcast(entity, "Global Network Mark I");
+		gTerminal:Broadcast(entity, "Configuration de reseau");
 		gTerminal:Broadcast(entity, "  INFO:");
-		gTerminal:Broadcast(entity, "    Allows you to create networks.");
+		gTerminal:Broadcast(entity, "    Creez vos propres reseaux.");
 		gTerminal:Broadcast(entity, "  HELP:");
-		gTerminal:Broadcast(entity, "    :gnet c <network> - Creates a network.");
-		gTerminal:Broadcast(entity, "    :gnet l - Leaves the network.");
-		gTerminal:Broadcast(entity, "    :gnet ls - Lists all active networks.");
-		gTerminal:Broadcast(entity, "    :gnet lu - Lists all users in the network.");
-		gTerminal:Broadcast(entity, "    :gnet m <user ID> <text> - Sends a message to another user.");
+		gTerminal:Broadcast(entity, "    :gnet c <reseau> - Creer un reseau.");
+		gTerminal:Broadcast(entity, "    :gnet l - Quitter le reseau.");
+		gTerminal:Broadcast(entity, "    :gnet ls - Lister les reseaux actifs.");
+		gTerminal:Broadcast(entity, "    :gnet lu - Lister les utilisateurs d'un reseau.");
+		gTerminal:Broadcast(entity, "    :gnet m <ID utilisateur> <message> - Envoyer un message a un autre utilisateur.");
 	elseif (arguments[1] == "c") then
 		if ( !arguments[2] ) then
-			gTerminal:Broadcast(entity, "Invalid input for network!", GT_COL_ERR);
+			gTerminal:Broadcast(entity, "Mauvaise saisie du reseau!", GT_COL_ERR);
 
 			return;
 		end;
 
 		if (entity.networkID) then
-			gTerminal:Broadcast(entity, "You are currently hosting Network '"..entity.networkID.."'", GT_COL_WRN);
+			gTerminal:Broadcast(entity, "Vous hebergez deja un reseau '"..entity.networkID.."'", GT_COL_WRN);
 
 			return;
 		end;
 
 		for k, v in pairs( ents.FindByClass(entity.ClassName) ) do
 			if (v.isHost and v.networkID == arguments[2]) then
-				gTerminal:Broadcast(entity, "Network ID already taken!", GT_COL_ERR);
+				gTerminal:Broadcast(entity, "ID de reseau deja utilise!", GT_COL_ERR);
 
 				return;
 			end;
@@ -103,20 +103,20 @@ OS:NewCommand(":gnet", function(client, entity, arguments)
 		entity.networkID = arguments[2];
 
 		if (entity.netPassword) then
-			gTerminal:Broadcast(entity, "Created Network '"..entity.networkID.."' with password '"..entity.netPassword.."'", GT_COL_SUCC);
+			gTerminal:Broadcast(entity, "Le reseau '"..entity.networkID.."' a ete cree avec la cle '"..entity.netPassword.."'", GT_COL_SUCC);
 		else
-			gTerminal:Broadcast(entity, "Created Network '"..entity.networkID.."'", GT_COL_SUCC);
+			gTerminal:Broadcast(entity, "Creation du reseau '"..entity.networkID.."'", GT_COL_SUCC);
 		end;
 	elseif (arguments[1] == "l") then
 		if (!entity.networkID) then
-			gTerminal:Broadcast(entity, "You aren't connected to a network!", GT_COL_ERR);
+			gTerminal:Broadcast(entity, "Vous n'etes connecte a aucun reseau!", GT_COL_ERR);
 
 			return;
 		end;
 
 		for k, v in pairs( ents.FindByClass(entity.ClassName) ) do
 			if (entity.isHost and v != entity and v.networkID and v.networkID == entity.networkID) then
-				gTerminal:Broadcast(v, "Lost connection to active network!", GT_COL_WRN);
+				gTerminal:Broadcast(v, "Connexion au reseau perdue!", GT_COL_WRN);
 
 				v.networkID = nil;
 			end;
@@ -125,9 +125,9 @@ OS:NewCommand(":gnet", function(client, entity, arguments)
 		entity.isHost = nil;
 		entity.networkID = nil;
 
-		gTerminal:Broadcast(entity, "You have left your network.", GT_COL_SUCC);
+		gTerminal:Broadcast(entity, "Vous avez quitte le reseau.", GT_COL_SUCC);
 	elseif (arguments[1] == "ls") then
-		gTerminal:Broadcast(entity, "ACTIVE NETWORKS:");
+		gTerminal:Broadcast(entity, "RESEAUX ACTIFS:");
 
 		local num = 0;
 
@@ -136,7 +136,7 @@ OS:NewCommand(":gnet", function(client, entity, arguments)
 				num = num + 1;
 
 				if (v.netPassword) then
-					gTerminal:Broadcast(entity, "    "..num..". "..v.networkID.." (PRIVATE)");
+					gTerminal:Broadcast(entity, "    "..num..". "..v.networkID.." (PRIVE)");
 				else
 					gTerminal:Broadcast(entity, "    "..num..". "..v.networkID.." (PUBLIC)");
 				end;
@@ -144,15 +144,15 @@ OS:NewCommand(":gnet", function(client, entity, arguments)
 		end;
 
 		gTerminal:Broadcast(entity, "");
-		gTerminal:Broadcast(entity, "    Found "..num.." active network(s).");
+		gTerminal:Broadcast(entity, "    "..num.." reseaux actif(s) trouve(s).");
 	elseif (arguments[1] == "lu") then
 		if (!entity.networkID) then
-			gTerminal:Broadcast(entity, "You aren't connected to a network!", GT_COL_ERR);
+			gTerminal:Broadcast(entity, "Vous n'etes connecte a aucun reseau!", GT_COL_ERR);
 
 			return;
 		end;
 
-		gTerminal:Broadcast(entity, "ACTIVE USERS:");
+		gTerminal:Broadcast(entity, "UTILISATEURS ACTIFS:");
 
 		local num = 0;
 
@@ -171,17 +171,17 @@ OS:NewCommand(":gnet", function(client, entity, arguments)
 		end;
 
 		gTerminal:Broadcast(entity, "");
-		gTerminal:Broadcast(entity, "    Found "..num.." active user(s).");
+		gTerminal:Broadcast(entity, "    "..num.." utilisateur(s) actif(s) trouve(s).");
 	elseif (arguments[1] == "m") then
 		if (!entity.networkID) then
-			gTerminal:Broadcast(entity, "You aren't connected to a network!", GT_COL_ERR);
+			gTerminal:Broadcast(entity, "Vous n'etes connecte a aucun reseau!", GT_COL_ERR);
 
 			return;
 		end;
 
 		if ( !arguments[2] or (!tonumber( arguments[2] ) and arguments[2] != "@") ) then
-			gTerminal:Broadcast(entity, "Invalid input for user ID!", GT_COL_ERR);
-			gTerminal:Broadcast(entity, "Use an ID of another terminal or use @ to message everyone.", GT_COL_ERR);
+			gTerminal:Broadcast(entity, "ID d'utilisatuer introuvable!", GT_COL_ERR);
+			gTerminal:Broadcast(entity, "Utilisez l'id d'un autre terminal ou @ pour cibler tous les terminaux du reseau.", GT_COL_ERR);
 
 			return;
 		end;
@@ -194,7 +194,7 @@ OS:NewCommand(":gnet", function(client, entity, arguments)
 		local message = table.concat(arguments2, " ");
 
 		if (!message or message == "") then
-			gTerminal:Broadcast(entity, "You didn't specify a message!", GT_COL_ERR);
+			gTerminal:Broadcast(entity, "Vous n'avez pas specifie le message!", GT_COL_ERR);
 
 			return;
 		end;
@@ -213,7 +213,7 @@ OS:NewCommand(":gnet", function(client, entity, arguments)
 			index = tonumber( arguments[2] );
 
 			if (!index) then
-				gTerminal:Broadcast(entity, "Invalid terminal ID!", GT_COL_ERR);
+				gTerminal:Broadcast(entity, "ID de terminal invalide!", GT_COL_ERR);
 
 				return;
 			end;
@@ -234,14 +234,14 @@ OS:NewCommand(":gnet", function(client, entity, arguments)
 		end;
 
 		if (arguments[2] != "@" and !found) then
-			gTerminal:Broadcast(entity, "Couldn't find user!", GT_COL_ERR);
+			gTerminal:Broadcast(entity, "Impossible de trouver l'utilisateur!", GT_COL_ERR);
 
 			return;
 		end;
 
 		gTerminal:Broadcast(entity, name.."@"..entity.networkID.." => "..message, GT_COL_INFO);
 	end;
-end, "Global networking platform.");
+end, "Plateforme de reseau globale.");
 
 OS:NewCommand(":f", function(client, entity, arguments)
 	local command = arguments[1];
@@ -251,24 +251,24 @@ OS:NewCommand(":f", function(client, entity, arguments)
 	end;
 
 	if (!command) then
-		gTerminal:Broadcast(entity, "File System");
+		gTerminal:Broadcast(entity, "Systeme de fichiers");
 		gTerminal:Broadcast(entity, "  INFO:");
-		gTerminal:Broadcast(entity, "    This is the terminal's file system.");
+		gTerminal:Broadcast(entity, "    C'est le systeme de fichier du terminal.");
 		gTerminal:Broadcast(entity, "  HELP:");
-		gTerminal:Broadcast(entity, "    :f ndir <name> - Creates a new directory.");	
-		gTerminal:Broadcast(entity, "    :f r <old> <new> - Renames a file/directory.");	
-		gTerminal:Broadcast(entity, "    :f d <name> - Deletes a file/directory.");
-		gTerminal:Broadcast(entity, "    :f w <name> <value> - Writes a file.");
-		gTerminal:Broadcast(entity, "    :f chdir <name> - Changes the current directory.");
-		gTerminal:Broadcast(entity, "    :f l - Lists items in the current directory.");
-		gTerminal:Broadcast(entity, "    :f rd <name> - Reads the content of a file.");
+		gTerminal:Broadcast(entity, "    :f ndir <nom> - Creer un nouveau repertoire.");	
+		gTerminal:Broadcast(entity, "    :f r <ancien> <nouveau> - Renommer un fichier/repertoire.");	
+		gTerminal:Broadcast(entity, "    :f d <nom> - Supprimer un fichier/repertoire.");
+		gTerminal:Broadcast(entity, "    :f w <nom> <valeur> - Ecrire un fichier.");
+		gTerminal:Broadcast(entity, "    :f chdir <nom> - Changer le repertoire courant.");
+		gTerminal:Broadcast(entity, "    :f l - Lister tous les elements presents dans ce repertoire.");
+		gTerminal:Broadcast(entity, "    :f rd <nom> - Lire le contenu d'un fichier.");
 	elseif (command == "ndir") then
 		local key = arguments[2];
 
 		local success = gTerminal.file:Write( entity, key, {} );
 
 		if (success) then
-			gTerminal:Broadcast(entity, "Created new directory '"..key.."'.", GT_COL_SUCC);
+			gTerminal:Broadcast(entity, "Nouveau repertoire cree: '"..key.."'.", GT_COL_SUCC);
 		end;
 	elseif (command == "r") then
 		local key = arguments[2];
@@ -277,7 +277,7 @@ OS:NewCommand(":f", function(client, entity, arguments)
 		local success = gTerminal.file:Rename(entity, key, new);
 
 		if (success) then
-			gTerminal:Broadcast(entity, "Renamed '"..key.."' to '"..new.."'.", GT_COL_SUCC);
+			gTerminal:Broadcast(entity, "Renomme de '"..key.."' a '"..new.."'.", GT_COL_SUCC);
 		end;
 	elseif (command == "d") then
 		local key = arguments[2];
@@ -285,7 +285,7 @@ OS:NewCommand(":f", function(client, entity, arguments)
 		local success = gTerminal.file:Delete(entity, key);
 
 		if (success) then
-			gTerminal:Broadcast(entity, "Deleted '"..key.."'.", GT_COL_SUCC);
+			gTerminal:Broadcast(entity, "'"..key.."' supprime.", GT_COL_SUCC);
 		end;
 	elseif (command == "w") then
 		local key = arguments[2];
@@ -299,7 +299,7 @@ OS:NewCommand(":f", function(client, entity, arguments)
 		local success = gTerminal.file:Write(entity, key, value);
 
 		if (success) then
-			gTerminal:Broadcast(entity, "Created new file '"..key.."'.", GT_COL_SUCC);
+			gTerminal:Broadcast(entity, "Nouveau fichier cree: '"..key.."'.", GT_COL_SUCC);
 		end;
 	elseif (command == "chdir") then
 		local key = arguments[2];
@@ -307,7 +307,7 @@ OS:NewCommand(":f", function(client, entity, arguments)
 		local success = gTerminal.file:ChangeDir(entity, key);
 
 		if (success) then
-			gTerminal:Broadcast(entity, "Changed directory to '"..key.."'.", GT_COL_SUCC);
+			gTerminal:Broadcast(entity, "Repertoire change vers '"..key.."'.", GT_COL_SUCC);
 		end;
 	elseif (command == "l") then
 		gTerminal:Broadcast(entity, "../");
@@ -340,27 +340,27 @@ OS:NewCommand(":isp", function(client, entity, arguments)
 	if (!command) then
 		gTerminal:Broadcast(entity, "Instance Stream Protocol");
 		gTerminal:Broadcast(entity, "  INFO:");
-		gTerminal:Broadcast(entity, "    Allows for instance streaming of file from one terminal to another.");
+		gTerminal:Broadcast(entity, "    Autorise l'envoi et le partage de fichier a distance.");
 		gTerminal:Broadcast(entity, "  HELP:");
-		gTerminal:Broadcast(entity, "    :isp s <user> <file> - Sends a request for the user to accept the file.");	
+		gTerminal:Broadcast(entity, "    :isp s <utilisateur> <fichier> - Envoyer une demande d'envoi de fichier.");	
 	elseif (command == "s") then
 		local index = tonumber( arguments[2] );
 		local name = arguments[3];
 
 		if (!index) then
-			gTerminal:Broadcast(entity, "Invalid input for user ID!", GT_COL_ERR);
+			gTerminal:Broadcast(entity, "ID utilisateur invalide!", GT_COL_ERR);
 
 			return;
 		end;
 
 		if (!name) then
-			gTerminal:Broadcast(entity, "Invalid input for file name!", GT_COL_ERR);
+			gTerminal:Broadcast(entity, "Nom du fichier invalide!", GT_COL_ERR);
 
 			return;
 		end;
 
 		if (entity.sendingFile) then
-			gTerminal:Broadcast(entity, "You are currently making a request!", GT_COL_ERR);
+			gTerminal:Broadcast(entity, "Vous etes en train de faire une demande!", GT_COL_ERR);
 
 			return;
 		end;
@@ -370,8 +370,8 @@ OS:NewCommand(":isp", function(client, entity, arguments)
 		if (success and value) then
 			for k, v in pairs( ents.FindByClass(entity.ClassName) ) do
 				if ( v.networkID and v.networkID == entity.networkID and (v:EntIndex() == index) ) then
-					gTerminal:Broadcast(entity, "User validated, bridging connection...");
-					gTerminal:Broadcast(v, "Incoming instance request, bridging connection...");
+					gTerminal:Broadcast(entity, "Utilisateur valide, bridge de la connexion...");
+					gTerminal:Broadcast(v, "Requete en attente, bridge de la connexion...");
 
 					if (!v.sendingFile) then
 						entity.sendingFile = true;
@@ -380,9 +380,9 @@ OS:NewCommand(":isp", function(client, entity, arguments)
 						v.isp_Value = value;
 						v.sendingFile = true;
 
-						gTerminal:Broadcast(entity, "Connection finished, waiting for answer.");
-						gTerminal:Broadcast(v, "Connection finished, waiting for answer.");
-						gTerminal:Broadcast(v, "Would you like to accept file '"..v.isp_Name.."' from "..entity:EntIndex().."? (Y/N)");
+						gTerminal:Broadcast(entity, "Connexion terminee, En attente de la reponse.");
+						gTerminal:Broadcast(v, "Connexion terminee, En attente de la reponse.");
+						gTerminal:Broadcast(v, "Voulez vous accepter le fichier '"..v.isp_Name.."' de "..entity:EntIndex().."? (Y/N)");
 
 						timer.Create("gT_file_req_"..entity:EntIndex(), 60, 1, function()
 							if (IsValid(entity) and entity.sendingFile) then
@@ -393,10 +393,10 @@ OS:NewCommand(":isp", function(client, entity, arguments)
 									v.isp_Value = nil;
 									v.sendingFile = nil;
 
-									gTerminal:Broadcast(v, "Request timed out after one minute...", GT_COL_WRN);
+									gTerminal:Broadcast(v, "Requete obsolete apres une minute d'attente...", GT_COL_WRN);
 								end;
 
-								gTerminal:Broadcast(entity, "Request timed out after one minute...", GT_COL_WRN);
+								gTerminal:Broadcast(entity, "Requete obsolete apres une minute d'attente...", GT_COL_WRN);
 							end;
 						end);
 
@@ -404,11 +404,11 @@ OS:NewCommand(":isp", function(client, entity, arguments)
 							if (arguments[1] and string.lower( arguments[1] ) == "y") then
 								gTerminal.file:Write(v, v.isp_Name, v.isp_Value);
 
-								gTerminal:Broadcast(entity, "File has been sent, closed connection.", GT_COL_SUCC);
-								gTerminal:Broadcast(v, "File has been sent, closed connection.", GT_COL_SUCC);
+								gTerminal:Broadcast(entity, "Fichier envoye, connexion terminee.", GT_COL_SUCC);
+								gTerminal:Broadcast(v, "Fichier envoye, connexion terminee.", GT_COL_SUCC);
 							else
-								gTerminal:Broadcast(entity, "Request denied, closed connection.", GT_COL_WRN);
-								gTerminal:Broadcast(v, "Connection denied, closed connection.", GT_COL_WRN);
+								gTerminal:Broadcast(entity, "Requete refusee, connexion terminee.", GT_COL_WRN);
+								gTerminal:Broadcast(v, "Requete refusee, connexion terminee.", GT_COL_WRN);
 							end;
 
 							timer.Destroy( "gT_file_req_"..entity:EntIndex() );
@@ -422,15 +422,15 @@ OS:NewCommand(":isp", function(client, entity, arguments)
 							return;
 						end);
 					else
-						gTerminal:Broadcast(entity, "Request failed! Active connection already established.", GT_COL_WRN);
-						gTerminal:Broadcast(v, "Request failed! Active connection already established.", GT_COL_WRN);
+						gTerminal:Broadcast(entity, "Requete refusee! Une connexion activee est deja etablie.", GT_COL_WRN);
+						gTerminal:Broadcast(v, "Requete refusee! Une connexion activee est deja etablie.", GT_COL_WRN);
 					end;
 
 					return;
 				end;
 			end;
 
-			gTerminal:Broadcast(entity, "Failed to find user!", GT_COL_ERR);
+			gTerminal:Broadcast(entity, "Impossible de trouver l'utilisateur!", GT_COL_ERR);
 		end;
 	end;
-end, "Transfer files over a network.");
+end, "Transferer des fichiers par reseau.");

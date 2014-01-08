@@ -83,4 +83,4 @@ net.Receive("gT_EndTyping", function(length)
 	end;
 end);
 
-MsgC(Color(0, 255, 0), "Loading gTerminal!\n");
+MsgC(Color(0, 255, 0), "Chargement gTerminal!\n");

@@ -4,17 +4,17 @@ local OS = OS;
 
 OS:NewCommand(":help", function(client, entity, arguments)
 	gTerminal:Broadcast(entity, "=============================");
-	gTerminal:Broadcast(entity, "  *Welcome to the Terminal!");
-	gTerminal:Broadcast(entity, "  *Created by Chessnut.");
+	gTerminal:Broadcast(entity, "  *Bienvenue sur le Terminal!");
+	gTerminal:Broadcast(entity, "  *Cree par Chessnut, traduit par MisterTakaashi.");
 	gTerminal:Broadcast(entity, "");
-	gTerminal:Broadcast(entity, "    COMMANDS:");
+	gTerminal:Broadcast(entity, "    COMMANDES:");
 
 	for k, v in SortedPairs( OS:GetCommands() ) do
 		gTerminal:Broadcast(entity, "     "..k.." - "..v.help);
 	end;
 
 	gTerminal:Broadcast(entity, "=============================");
-end, "Provides a list of help.");
+end, "Affiche une liste des commandes.");
 
 OS:NewCommand(":cls", function(client, entity)
 	for i = 0, 25 do
@@ -24,7 +24,7 @@ OS:NewCommand(":cls", function(client, entity)
 			end;
 		end);
 	end;
-end, "Clears the screen.");
+end, "Nettoyer l'ecran.");
 
 OS:NewCommand(":os", function(client, entity, arguments)
 	local command = arguments[1];
@@ -33,11 +33,11 @@ OS:NewCommand(":os", function(client, entity, arguments)
 		local info = arguments[2];
 
 		if (!info) then
-			gTerminal:Broadcast(entity, "Invalid OS identifier!", GT_COL_ERR);
+			gTerminal:Broadcast(entity, "OS inconnu!", GT_COL_ERR);
 
 			return;
 		elseif (info == "default") then
-			gTerminal:Broadcast(entity, "Cannot use primary system!", GT_COL_ERR);
+			gTerminal:Broadcast(entity, "Impossible d'utiliser le systeme primaire!", GT_COL_ERR);
 
 			return;
 		end;
@@ -45,14 +45,14 @@ OS:NewCommand(":os", function(client, entity, arguments)
 		local system = gTerminal.os[info];
 
 		if (!system) then
-			gTerminal:Broadcast(entity, "Couldn't find OS!", GT_COL_ERR);
+			gTerminal:Broadcast(entity, "Impossible de trouver l'OS!", GT_COL_ERR);
 
 			return;
 		end;
 
 		entity.locked = true;
 
-		gTerminal:Broadcast(entity, "Preparing installation...", GT_COL_INTL);
+		gTerminal:Broadcast(entity, "Preparation de l'installation...", GT_COL_INTL);
 
 		timer.Simple(1, function()
 			if ( !IsValid(entity) ) then
@@ -71,18 +71,18 @@ OS:NewCommand(":os", function(client, entity, arguments)
 			gTerminal:Broadcast(entity, "=================================================", GT_COL_MSG, 22);
 
 			local messages = {
-				"Inspecting disk space.",
-				"Allocating disk space.",
-				"Retrieving required resources.",
-				"Unpacking resources.",
-				"Retrieving system requirements.",
-				"Validating file integrity.",
-				"Compiling packages.",
-				"Exporting packages to file system.",
-				"Setting up access data.",
-				"Setting up system profile.",
-				"Setting up commands.",
-				"Finalizing product."
+				"Inspection de l'espace disque.",
+				"Allocation de l'espace disque.",
+				"Recherche des ressources.",
+				"Unpacking des resources.",
+				"Recherche des prerequis systeme.",
+				"Validation de l'integrite des fichiers.",
+				"Compilation des packages.",
+				"Exportation des packages sur le systeme de fichier.",
+				"Reglage des donnees d'acces.",
+				"Reglage des profiles.",
+				"Reglage des commandes.",
+				"Finalisation de l'installation."
 			};
 
 			local time = math.Rand(0.5, 1.5);
@@ -104,7 +104,7 @@ OS:NewCommand(":os", function(client, entity, arguments)
 								end;
 							end;
 
-							gTerminal:Broadcast(entity, "SHUTTING DOWN, PLEASE RESTART TERMINAL...", GT_COL_INTL, 1);
+							gTerminal:Broadcast(entity, "ARRET DU SYSTEME, REDEMARREZ LE TERMINAL...", GT_COL_INTL, 1);
 
 							timer.Simple(math.Rand(1, 3), function()
 								if ( IsValid(entity) ) then
@@ -121,7 +121,7 @@ OS:NewCommand(":os", function(client, entity, arguments)
 	elseif (command == "list") then
 		local info = arguments[2];
 
-		gTerminal:Broadcast(entity, "Available OS Packages:");
+		gTerminal:Broadcast(entity, "Packages d'OS disponibles:");
 		gTerminal:Broadcast(entity, "", GT_COL_MSG);
 
 		local count = 0;
@@ -134,17 +134,17 @@ OS:NewCommand(":os", function(client, entity, arguments)
 			end;
 		end;
 	else
-		gTerminal:Broadcast(entity, "Operation System Config");
+		gTerminal:Broadcast(entity, "Configuration de l'OS");
 		gTerminal:Broadcast(entity, "  INFO:");
-		gTerminal:Broadcast(entity, "    Allows configuration of the operation system.");
-		gTerminal:Broadcast(entity, "  HELP:");
-		gTerminal:Broadcast(entity, "    :os install - Installs an OS package.");
-		gTerminal:Broadcast(entity, "    :os list - Lists the available OS packages.");
+		gTerminal:Broadcast(entity, "    Autorise la configuration de l'OS.");
+		gTerminal:Broadcast(entity, "  AIDE:");
+		gTerminal:Broadcast(entity, "    :os install - Installer un OS.");
+		gTerminal:Broadcast(entity, "    :os list - Lister les OS disponibles.");
 	end;
-end, "Operation system configuration.");
+end, "Configuration de l'OS.");
 
 OS:NewCommand(":x", function(client, entity)
-	gTerminal:Broadcast( entity, "SHUTTING DOWN..." );
+	gTerminal:Broadcast( entity, "ARRET EN COURS..." );
 
 	timer.Simple(math.Rand(2, 5), function()
 		if ( IsValid(entity) ) then
@@ -159,4 +159,4 @@ OS:NewCommand(":x", function(client, entity)
 			gTerminal.os:Call(entity, "ShutDown");
 		end;
 	end);
-end, "Turns off the terminal.");
+end, "Eteindre le terminal.");

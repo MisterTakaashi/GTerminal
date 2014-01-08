@@ -95,11 +95,11 @@ net.Receive("gT_EndConsole", function(length, client)
 			if (text == entity.password) then
 				client["pass_authed_"..index] = true;
 
-				gTerminal:Broadcast(entity, "Password accepted.");
+				gTerminal:Broadcast(entity, "Mot de passe accepte.");
 
 				return;
 			else
-				gTerminal:Broadcast(entity, "Please enter your password:");
+				gTerminal:Broadcast(entity, "Entrez votre mot de passe:");
 
 				return;
 			end;
@@ -143,7 +143,7 @@ net.Receive("gT_EndConsole", function(length, client)
 
 				text = "Invalid command! ("..string.sub(text, 2)..")";
 			else
-				gTerminal:Broadcast(entity, "System error from user response!", GT_COL_INTL);
+				gTerminal:Broadcast(entity, "Erreur systeme provoque par entree utilisateur!", GT_COL_INTL);
 
 				return;
 			end;
@@ -203,4 +203,4 @@ for k, v in pairs(folders) do
 	OS = nil;
 end;
 
-MsgC(Color(0, 255, 0), "Initialized gTerminal!\n");
+MsgC(Color(0, 255, 0), "gTerminal initialise!\n");
