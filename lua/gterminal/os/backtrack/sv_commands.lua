@@ -348,11 +348,15 @@ OS:NewCommand(":f", function(client, entity, arguments)
 		table.remove(arguments2, 1);
 
 		local value = table.concat(arguments2, " ");
-		local success = gTerminal.file:Write(entity, key, value);
-
-		if (success) then
-			gTerminal:Broadcast(entity, "Nouveau fichier cree: '"..key.."'.", GT_COL_SUCC);
-		end;
+        if (value=="virus_trojan") then
+            gTerminal:Broadcast(entity, "Impossible de compiler", GT_COL_ERR);
+        else
+            local success = gTerminal.file:Write(entity, key, value);
+            if (success) then
+                gTerminal:Broadcast(entity, "Nouveau fichier cree: '"..key.."'.", GT_COL_SUCC);
+            end;
+        end;
+        
 	elseif (command == "chdir") then
 		local key = arguments[2];
 
@@ -405,7 +409,7 @@ OS:NewCommand(":f", function(client, entity, arguments)
             else
                     gTerminal:Broadcast( entity, tostring(value), GT_COL_INFO );
             end;
-		end;		
+		end;
 	end;
 
 end, "Systeme de fichier.");
