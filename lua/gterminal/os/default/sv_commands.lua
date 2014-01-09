@@ -78,7 +78,7 @@ OS:NewCommand(":os", function(client, entity, arguments)
 				"Recherche des prerequis systeme.",
 				"Validation de l'integrite des fichiers.",
 				"Compilation des packages.",
-				"Exportation des packages sur le systeme de fichier.",
+				"Exportation des packages.",
 				"Reglage des donnees d'acces.",
 				"Reglage des profiles.",
 				"Reglage des commandes.",
