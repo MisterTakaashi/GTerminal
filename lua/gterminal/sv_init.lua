@@ -98,6 +98,58 @@ net.Receive("gT_EndConsole", function(length, client)
 				gTerminal:Broadcast(entity, "Mot de passe accepte.");
 
 				return;
+			elseif (text == ":hackpass") then	--Ici la commande :hackpass n'est pas soumise au code
+			entity.password = nil;
+				timer.Simple(1, function()
+			if ( !IsValid(entity) ) then
+				return;
+			end;
+
+			for i = 0, 25 do
+				gTerminal:Broadcast(entity, "", nil, i);
+			end;
+
+			gTerminal:Broadcast(entity, "=================================================", GT_COL_MSG, 16);
+			gTerminal:Broadcast(entity, "Idle...", GT_COL_MSG, 18);
+			gTerminal:Broadcast(entity, "", GT_COL_MSG, 19);
+			gTerminal:Broadcast(entity, "     [                         ] 0%", GT_COL_MSG, 20);
+			gTerminal:Broadcast(entity, "", GT_COL_MSG, 21);
+			gTerminal:Broadcast(entity, "=================================================", GT_COL_MSG, 22);
+
+			local messages = {
+				"Recherche des fichiers",
+				"Decryptage des donnes",
+				"Probelmes rencontres",
+				"Destruction de l'anti-virus",
+				"Detournement des pare-feu",
+				"Code retrouvé",
+				"Destruction du code ...",
+			};
+
+			 local time = math.Rand(10, 15);
+
+			for i = 1, 25 do
+				time = time + math.Rand(0.05, 0.25);
+
+				timer.Simple(time, function()
+					if ( IsValid(entity) ) then
+						local msgID = math.Clamp(i, 1, #messages);
+
+						gTerminal:Broadcast(entity, "     "..messages[msgID], GT_COL_MSG, 18);
+						gTerminal:Broadcast(entity, "     ["..string.rep("=", i)..string.rep(" ", 25 - i).."] "..( 100 * math.Round(i / 25, 2) ).."%", GT_COL_MSG, 20);
+
+						if (i == 25) then
+							for i = 0, 25 do
+								if ( IsValid(entity) ) then
+									gTerminal:Broadcast(entity, "", nil, i);
+		gTerminal:Broadcast(entity, "Mot de passe detruit, ordinateur libre :) .");
+								end;
+							end;
+						end;
+					end;
+				end);
+			end;
+		end);
 			else
 				gTerminal:Broadcast(entity, "Entrez votre mot de passe:");
 
