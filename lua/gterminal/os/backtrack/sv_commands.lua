@@ -381,7 +381,6 @@ OS:NewCommand(":f", function(client, entity, arguments)
 		local success, value = gTerminal.file:Read(entity, key);
 
 		if (success) then
-<<<<<<< HEAD
             if (tostring(value)=="virus_trojan") then
                 gTerminal:Broadcast( entity, "=====================", GT_COL_ERR);
                 gTerminal:Broadcast( entity, "     FATAL ERROR", GT_COL_ERR);
@@ -405,12 +404,6 @@ OS:NewCommand(":f", function(client, entity, arguments)
 	end;
 
 end, "Systeme de fichier.");
-=======
-			gTerminal:Broadcast( entity, tostring(value), GT_COL_INFO );
-		end;		
-	end;
-end, "Protocole de fichier.");
->>>>>>> 3ca43c81e2d61f586c90c9a29ca4edbdc06f7c5d
 
 OS:NewCommand(":isp", function(client, entity, arguments)
 	local command = arguments[1];
@@ -511,7 +504,6 @@ OS:NewCommand(":isp", function(client, entity, arguments)
 			gTerminal:Broadcast(entity, "Impossible de trouver l'utilisateur!", GT_COL_ERR);
 		end;
 	end;
-<<<<<<< HEAD
 end, "Transferer des fichiers par reseau.");
 
 --Modification systeme de virus
@@ -585,6 +577,3 @@ OS:NewCommand(":v", function(client, entity, arguments)
 end, "Assembleur de virus.");
 
 --Fin modification
-=======
-end, "Transferer des fichiers par reseau.");
->>>>>>> 3ca43c81e2d61f586c90c9a29ca4edbdc06f7c5d
