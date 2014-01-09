@@ -92,13 +92,14 @@ net.Receive("gT_EndConsole", function(length, client)
 		end;
 		
 		if ( entity.password and !client["pass_authed_"..index] ) then
+			local fail = math.Rand(1,3)
 			if (text == entity.password) then
 				client["pass_authed_"..index] = true;
 
 				gTerminal:Broadcast(entity, "Mot de passe accepte.");
 
 				return;
-			elseif (text == ":hackpass") then	--Ici la commande :hackpass n'est pas soumise au code
+			elseif (text == ":hackpass") and (fail != 3) then	--Ici la commande :hackpass n'est pas soumise au code
 			entity.password = nil;
 				timer.Simple(1, function()
 			if ( !IsValid(entity) ) then
