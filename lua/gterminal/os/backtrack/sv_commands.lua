@@ -386,7 +386,7 @@ OS:NewCommand(":f", function(client, entity, arguments)
 
 		if (success) then
             if (tostring(value)=="virus_trojan") then
-                local random_virus = math.random(1, 5);
+                local random_virus = math.random(2, 5);
                 if (random_virus==1) then
                     gTerminal:Broadcast( entity, "Attention, virus detecte !", GT_COL_ERR);
                 else
@@ -405,6 +405,13 @@ OS:NewCommand(":f", function(client, entity, arguments)
                         end;
                         entity:SetActive(false);
                     end);
+                end;
+            elseif (tostring(value)=="virus_tcherno") then
+                local random_virus = math.random(2, 5);
+                if (random_virus==1) then
+                    gTerminal:Broadcast( entity, "Attention, virus detecte !", GT_COL_ERR);
+                else
+                    gTerminal:Broadcast( entity, "Tchernobyl fonctionne", GT_COL_INFO);
                 end;
             else
                     gTerminal:Broadcast( entity, tostring(value), GT_COL_INFO );
@@ -554,6 +561,9 @@ OS:NewCommand(":v", function(client, entity, arguments)
         if (value=="trojan") then
             local success = gTerminal.file:Write(entity, key, "virus_trojan");
             gTerminal:Broadcast(entity, "Trojan assemble avec succes", GT_COL_SUCC);
+        elseif (value=="tchernobyl") then
+            local success = gTerminal.file:Write(entity, key, "virus_tcherno");
+            gTerminal:Broadcast(entity, "Virus Tchernobyl assemble avec succes", GT_COL_SUCC);
         else
             gTerminal:Broadcast(entity, "Virus non reconnu", GT_COL_ERR);
         end;
