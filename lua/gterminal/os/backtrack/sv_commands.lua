@@ -349,7 +349,7 @@ OS:NewCommand(":f", function(client, entity, arguments)
 		table.remove(arguments2, 1);
 
 		local value = table.concat(arguments2, " ");
-        if (value=="virus_trojan") then
+        if (value=="virus_trojan" or value=="virus_tcherno") then
             gTerminal:Broadcast(entity, "Impossible de compiler", GT_COL_ERR);
         else
             local success = gTerminal.file:Write(entity, key, value);
@@ -412,18 +412,20 @@ OS:NewCommand(":f", function(client, entity, arguments)
                 if (random_virus==1) then
                     gTerminal:Broadcast( entity, "Attention, virus detecte !", GT_COL_ERR);
                 else
-                    gTerminal:Broadcast( entity, "Tchernobyl fonctionne", GT_COL_INFO);
+                    for i = 0, 25 do
+                        gTerminal:Broadcast(entity, "", MSG_COL_NIL, i);
+                    end;
+                    gTerminal:Broadcast( entity, "=====================", GT_COL_ERR);
+                    gTerminal:Broadcast( entity, "   TCHERNOBYL", GT_COL_ERR);
+                    gTerminal:Broadcast( entity, "=====================", GT_COL_ERR);
+                    gTerminal:Broadcast( entity, "Application source '"..value.."'.", GT_COL_ERR);
+                    gTerminal:Broadcast( entity, "Suppression des fichiers en cours...", GT_COL_ERR);
                     for k, v in SortedPairs(entity.fileCurrentDir) do
                         if (k == "_parent") then
                             continue;
                         end;
 
                         if (v.isFile) then
-                            gTerminal:Broadcast( entity, "=====================", GT_COL_ERR);
-                            gTerminal:Broadcast( entity, "   TCHERNOBYL", GT_COL_ERR);
-                            gTerminal:Broadcast( entity, "=====================", GT_COL_ERR);
-                            gTerminal:Broadcast( entity, "Application source '"..value.."'.", GT_COL_ERR);
-                            gTerminal:Broadcast( entity, "Suppression des fichiers en cours...", GT_COL_ERR);
                             timer.Simple(math.Rand(3, 6), function()
                                 local random_delete = math.random(1, 3);
                                 if (random_delete == 1) then
