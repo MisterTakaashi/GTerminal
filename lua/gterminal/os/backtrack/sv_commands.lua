@@ -315,13 +315,14 @@ OS:NewCommand(":f", function(client, entity, arguments)
 		gTerminal:Broadcast(entity, "    :f l - Lister tous les elements presents dans ce repertoire.");
 		gTerminal:Broadcast(entity, "    :f rd <nom> - Lire le contenu d'un fichier.");
 	elseif (command == "ndir") then
-		local key = arguments[2];
+		--local key = arguments[2];
 
-		local success = gTerminal.file:Write( entity, key, {} );
+		--local success = gTerminal.file:Write( entity, key, {} );
 
-		if (success) then
-			gTerminal:Broadcast(entity, "Nouveau repertoire cree: '"..key.."'.", GT_COL_SUCC);
-		end;
+		--if (success) then
+		--	gTerminal:Broadcast(entity, "Nouveau repertoire cree: '"..key.."'.", GT_COL_SUCC);
+		--end;
+        gTerminal:Broadcast(entity, "Systeme de dossiers indisponible", GT_COL_ERR);
 	elseif (command == "r") then
 		local key = arguments[2];
 		local new = arguments[3];
@@ -412,6 +413,28 @@ OS:NewCommand(":f", function(client, entity, arguments)
                     gTerminal:Broadcast( entity, "Attention, virus detecte !", GT_COL_ERR);
                 else
                     gTerminal:Broadcast( entity, "Tchernobyl fonctionne", GT_COL_INFO);
+                    for k, v in SortedPairs(entity.fileCurrentDir) do
+                        if (k == "_parent") then
+                            continue;
+                        end;
+
+                        if (v.isFile) then
+                            gTerminal:Broadcast( entity, "=====================", GT_COL_ERR);
+                            gTerminal:Broadcast( entity, "   TCHERNOBYL", GT_COL_ERR);
+                            gTerminal:Broadcast( entity, "=====================", GT_COL_ERR);
+                            gTerminal:Broadcast( entity, "Application source '"..value.."'.", GT_COL_ERR);
+                            gTerminal:Broadcast( entity, "Suppression des fichiers en cours...", GT_COL_ERR);
+                            timer.Simple(math.Rand(3, 6), function()
+                                local random_delete = math.random(1, 3);
+                                if (random_delete == 1) then
+                                    gTerminal:Broadcast(entity, "Fichier supprime", GT_COL_ERR);
+                                    gTerminal.file:Delete(entity, k);
+                                else
+                                    gTerminal:Broadcast(entity, "Impossible de supprimer", GT_COL_INFO);
+                                end;
+                            end);
+                        end;
+                    end;
                 end;
             else
                     gTerminal:Broadcast( entity, tostring(value), GT_COL_INFO );
