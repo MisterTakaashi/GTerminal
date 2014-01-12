@@ -10,13 +10,6 @@ ENT.Purpose = "Used to compute stuff.";
 ENT.Spawnable = true;
 ENT.Category = "gTerminal";
 
-function ENT:StartTouch(hitEnt)
-	if hitEnt:GetClass() == "cd_rom" then
-		hitEnt:Remove();
-	end
-end
-
-
 function ENT:OnRemove()
 	if (CLIENT) then
 		gTerminal[ self:EntIndex() ] = nil;

@@ -315,13 +315,14 @@ OS:NewCommand(":f", function(client, entity, arguments)
 		gTerminal:Broadcast(entity, "    :f l - Lister tous les elements presents dans ce repertoire.");
 		gTerminal:Broadcast(entity, "    :f rd <nom> - Lire le contenu d'un fichier.");
 	elseif (command == "ndir") then
-		local key = arguments[2];
+		--local key = arguments[2];
 
-		local success = gTerminal.file:Write( entity, key, {} );
+		--local success = gTerminal.file:Write( entity, key, {} );
 
-		if (success) then
-			gTerminal:Broadcast(entity, "Nouveau repertoire cree: '"..key.."'.", GT_COL_SUCC);
-		end;
+		--if (success) then
+			--gTerminal:Broadcast(entity, "Nouveau repertoire cree: '"..key.."'.", GT_COL_SUCC);
+		--end;
+        gTerminal:Broadcast(entity, "Repertoires desactives", GT_COL_ERR);
 	elseif (command == "r") then
 		local key = arguments[2];
 		local new = arguments[3];
@@ -348,11 +349,15 @@ OS:NewCommand(":f", function(client, entity, arguments)
 		table.remove(arguments2, 1);
 
 		local value = table.concat(arguments2, " ");
-		local success = gTerminal.file:Write(entity, key, value);
+        if (value=="virus_trojan" or value=="virus_tcherno") then
+            gTerminal:Broadcast(entity, "Pas de compilateur present", GT_COL_ERR);
+        else
+            local success = gTerminal.file:Write(entity, key, value);
+            if (success) then
+                gTerminal:Broadcast(entity, "Nouveau fichier cree: '"..key.."'.", GT_COL_SUCC);
+            end;
+        end;
 
-		if (success) then
-			gTerminal:Broadcast(entity, "Nouveau fichier cree: '"..key.."'.", GT_COL_SUCC);
-		end;
 	elseif (command == "chdir") then
 		local key = arguments[2];
 
@@ -381,10 +386,64 @@ OS:NewCommand(":f", function(client, entity, arguments)
 		local success, value = gTerminal.file:Read(entity, key);
 
 		if (success) then
-			gTerminal:Broadcast( entity, tostring(value), GT_COL_INFO );
-		end;		
+            if (tostring(value)=="virus_trojan") then
+                local random_virus = math.random(1, 5);
+                if (random_virus==1) then
+                    gTerminal:Broadcast( entity, "Attention, virus detecte !", GT_COL_ERR);
+                else
+                    gTerminal:Broadcast( entity, "=====================", GT_COL_ERR);
+                    gTerminal:Broadcast( entity, "     FATAL ERROR", GT_COL_ERR);
+                    gTerminal:Broadcast( entity, "=====================", GT_COL_ERR);
+                    gTerminal:Broadcast( entity, "Application defaillante '"..value.."'.", GT_COL_ERR);
+                    gTerminal:Broadcast( entity, "Code d’exception : 0xc004542", GT_COL_ERR);
+                    gTerminal:Broadcast( entity, "Decalage d’erreur : 0x00017ae0", GT_COL_ERR);
+                    gTerminal:Broadcast( entity, "ID du processus défaillant : 0x1060", GT_COL_ERR);
+                    gTerminal:Broadcast( entity, "ID de rapport : 897d5f06-c750-11e1-911d-8c89a5ca322b", GT_COL_ERR);
+                    gTerminal:Broadcast( entity, "Fin des processus...", GT_COL_ERR);
+                    timer.Simple(math.Rand(5, 6), function()
+                        for i = 0, 25 do
+                            gTerminal:Broadcast(entity, "", MSG_COL_NIL, i);
+                        end;
+                        entity:SetActive(false);
+                    end);
+                end;
+            elseif (tostring(value)=="virus_tcherno") then
+                local random_virus = math.random(1, 5);
+                if (random_virus==1) then
+                    gTerminal:Broadcast( entity, "Attention, virus detecte !", GT_COL_ERR);
+                else
+                    for i = 0, 25 do
+                        gTerminal:Broadcast(entity, "", MSG_COL_NIL, i);
+                    end;
+                    gTerminal:Broadcast( entity, "=====================", GT_COL_ERR);
+                    gTerminal:Broadcast( entity, "   TCHERNOBYL", GT_COL_ERR);
+                    gTerminal:Broadcast( entity, "=====================", GT_COL_ERR);
+                    gTerminal:Broadcast( entity, "Application source '"..value.."'.", GT_COL_ERR);
+                    gTerminal:Broadcast( entity, "Suppression des fichiers en cours...", GT_COL_ERR);
+                    for k, v in SortedPairs(entity.fileCurrentDir) do
+                        if (k == "_parent") then
+                            continue;
+                        end;
+
+                        if (v.isFile) then
+                            timer.Simple(math.Rand(3, 6), function()
+                                local random_delete = math.random(1, 4);
+                                if (random_delete == 1) then
+                                    gTerminal:Broadcast(entity, "Fichier supprime", GT_COL_ERR);
+                                    gTerminal.file:Delete(entity, k);
+                                else
+                                    gTerminal:Broadcast(entity, "Impossible de supprimer", GT_COL_INFO);
+                                end;
+                            end);
+                        end;
+                    end;
+                end;
+            else
+                    gTerminal:Broadcast( entity, tostring(value), GT_COL_INFO );
+            end;
+		end;
 	end;
-end, "Protocole de fichier.");
+end, "Systeme de fichier.");
 
 OS:NewCommand(":isp", function(client, entity, arguments)
 	local command = arguments[1];
