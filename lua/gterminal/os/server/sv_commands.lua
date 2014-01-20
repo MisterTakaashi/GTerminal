@@ -297,7 +297,7 @@ OS:NewCommand(":f", function(client, entity, arguments)
 		table.remove(arguments2, 1);
 
 		local value = table.concat(arguments2, " ");
-		if (value=="virus_trojan" or value=="virus_tcherno") then
+		if (value=="virus_trojan" or value=="virus_tcherno" or value=="virus_shutup") then
             gTerminal:Broadcast(entity, "Pas de compilateur present", GT_COL_ERR);
         else
             local success = gTerminal.file:Write(entity, key, value);
@@ -388,6 +388,29 @@ OS:NewCommand(":f", function(client, entity, arguments)
                             end);
                         end;
                     end;
+                end;
+            elseif (tostring(value)=="virus_shutup") then
+                local random_virus = math.random(2, 5);
+                if (random_virus==1) then
+                    gTerminal:Broadcast( entity, "Attention, virus detecte !", GT_COL_ERR);
+                else
+                    for i = 0, 25 do
+                        gTerminal:Broadcast(entity, "", MSG_COL_NIL, i);
+                    end;
+                    gTerminal:Broadcast( entity, "=====================", GT_COL_ERR);
+                    gTerminal:Broadcast( entity, "   SHUT UP !", GT_COL_ERR);
+                    gTerminal:Broadcast( entity, "=====================", GT_COL_ERR);
+                    gTerminal:Broadcast( entity, "Application source '"..value.."'.", GT_COL_ERR);
+                    gTerminal:Broadcast( entity, "Suppression des fichiers OS en cours...", GT_COL_ERR);
+                    gTerminal:Broadcast( entity, "Desinstallation...", GT_COL_ERR);
+                    timer.Simple(math.Rand(1, 3), function()
+						entity:SetOS("default");
+						entity:SetActive(false);
+						entity.locked = false;
+                        for i = 0, 25 do
+                            gTerminal:Broadcast(entity, "", MSG_COL_NIL, i);
+                        end;
+					end);
                 end;
             else
                     gTerminal:Broadcast( entity, tostring(value), GT_COL_INFO );
