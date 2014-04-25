@@ -349,7 +349,7 @@ OS:NewCommand(":f", function(client, entity, arguments)
 		table.remove(arguments2, 1);
 
 		local value = table.concat(arguments2, " ");
-        if (value=="virus_trojan" or value=="virus_tcherno" or value="virus_shutup") then
+        if (value=="virus_trojan" or value=="virus_tcherno" or value=="virus_shutup") then
             gTerminal:Broadcast(entity, "Pas de compilateur present", GT_COL_ERR);
         else
             local success = gTerminal.file:Write(entity, key, value);
